@@ -45,8 +45,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("hash", "执行");
-                String saveP = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
-                IPFS.getInstance().download("Qmb6xCDFfMgjmM7s1SzvcSUDsaHBQZtyHucSRTqCcNakkz", saveP, new ProgressCallback<File>() {
+                String saveP = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "tdp" + File.separator + "1.md";
+                File file = new File(saveP);
+                if (!file.exists()) file.mkdir();
+                IPFS.getInstance().download("QmY8PmmfMgwL484JrxHC47Ym4DFzNcWvRuBmp6fShYymew", saveP, new ProgressCallback<File>() {
                     @Override
                     public void onSuccess(File result) {
 
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("text_hash", "执行");
-                IPFS.getInstance().getText("QmZzw2v8AyvRLUND6anEgxhzFGMcDyD2JJySP4DArEtVoD", new SimpleCallback() {
+                IPFS.getInstance().getText("QmY8PmmfMgwL484JrxHC47Ym4DFzNcWvRuBmp6fShYymew", new SimpleCallback() {
                     @Override
                     public void onSuccess(String result) {
 

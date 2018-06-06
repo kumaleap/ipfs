@@ -17,6 +17,9 @@ import org.xutils.http.body.MultipartBody;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,6 +173,31 @@ public class IPFS {
         }
     }
 
+    /**
+     * 复制文件
+     *
+     * @param oldPath 需要复制的文件路径
+     * @param newPath 复制后的文件路劲
+     */
+    private void copy(String oldPath, String newPath) {
+        try {
+            File oldfile = new File(oldPath);
+            if (oldfile.exists()) {
+                InputStream inStream = new FileInputStream(oldPath);
+                FileOutputStream fileOfutputStream = new FileOutputStream(newPath);
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inStream.read(buffer)) != -1) {
+                    fileOfutputStream.write(buffer, 0, length);
+                }
+                inStream.close();
+                fileOfutputStream.close();
+            }
+        } catch (Exception e) {
+            LogUtil.e(e.toString());
+        }
+    }
+
 
     /**
      * 根据hash获取文件 - 或者是获取文本 我封装处理一下
@@ -180,8 +208,8 @@ public class IPFS {
         String url = Conf.IPFS_GATEWAY + "/ipfs/" + hash;
         LogUtil.i("download url = " + url);
         RequestParams params = new RequestParams(url);
-        params.setAutoRename(true);
-        params.setAutoResume(true);
+        params.setAutoRename(false);
+        params.setAutoResume(false);
         params.setSaveFilePath(savePath);
         x.http().get(params, new Callback.ProgressCallback<File>() {
             @Override
